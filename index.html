@@ -1,1 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>Site Acessível - Lupa</title>
+</head>
+
+<body>
+
+  <div class="acessibilidade">
+    <strong>Recursos de acessibilidade</strong>
+
+    <button id="botaoLupa">
+      Ativar lupa
+    </button>
+  </div>
+
+  <header>
+    <h1>Acessibilidade na Web</h1>
+
+    <p>
+      Exemplo de página com recurso de ampliação de conteúdo.
+    </p>
+  </header>
+
+  <main id="conteudo">
+
+    <section>
+      <h2>O que é acessibilidade?</h2>
+
+      <p>
+        A acessibilidade digital permite que pessoas com diferentes
+        necessidades possam utilizar sites, aplicativos e outros
+        recursos digitais de maneira independente.
+      </p>
+
+      <p>
+        Um site acessível deve considerar diferentes formas de interação,
+        incluindo teclado, leitores de tela, contraste, tamanho do texto
+        e outras tecnologias assistivas.
+      </p>
+    </section>
+
+    <section>
+      <h2>Recursos de acessibilidade</h2>
+
+      <div class="card">
+        <h3>Ampliação</h3>
+        <p>
+          A lupa permite aumentar visualmente uma determinada região
+          da página enquanto o usuário movimenta o cursor.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Contraste</h3>
+        <p>
+          Cores com contraste adequado ajudam pessoas com baixa visão
+          a identificar textos e elementos da interface.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Navegação pelo teclado</h3>
+        <p>
+          Todos os elementos interativos devem poder ser acessados
+          utilizando apenas o teclado.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Exemplo de conteúdo</h2>
+
+      <p>
+        Este texto serve para demonstrar o funcionamento da lupa.
+        Movimente o cursor sobre a página depois de ativar o recurso
+        para visualizar uma região ampliada.
+      </p>
+
+      <ul>
+        <li>Texto ampliado</li>
+        <li>Elementos visuais ampliados</li>
+        <li>Maior facilidade de leitura</li>
+        <li>Recurso opcional de acessibilidade</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <div id="lupa" aria-hidden="true">
+    <div id="lupa-conteudo"></div>
+  </div>
+
+</body>
+</html>
