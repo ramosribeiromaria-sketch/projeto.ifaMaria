@@ -37,6 +37,10 @@ h2 {
   font-size: 1.7rem;
 }
 
+h3 {
+  color: #003366;
+}
+
 p,
 li {
   font-size: 1.1rem;
@@ -78,6 +82,33 @@ button:focus {
   color: #111;
   font-weight: bold;
   margin-left: 10px;
+}
+
+/* ------------------------------
+   VÍDEO SOBRE VISÃO
+------------------------------ */
+
+.video-visao {
+  margin-top: 25px;
+  background: #f2f6f9;
+  padding: 20px;
+  border-left: 6px solid #0055aa;
+  border-radius: 8px;
+}
+
+.video-visao h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.video-visao video {
+  display: block;
+  width: 100%;
+  max-width: 850px;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 8px;
+  background: #000;
 }
 
 /* ------------------------------
