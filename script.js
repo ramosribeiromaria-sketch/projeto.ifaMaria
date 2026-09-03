@@ -3,6 +3,7 @@ const lupaConteudo = document.getElementById("lupa-conteudo");
 const botaoLupa = document.getElementById("botaoLupa");
 
 let lupaAtiva = false;
+
 const ZOOM = 1.8;
 
 function criarConteudoDaLupa() {
@@ -13,8 +14,8 @@ function criarConteudoDaLupa() {
   // Remove a própria lupa da cópia
   copia.querySelector("#lupa")?.remove();
 
-  // Configura a cópia da página
   copia.classList.add("lupa-pagina");
+
   copia.style.margin = "0";
   copia.style.padding = "0";
   copia.style.width = "100vw";
@@ -25,12 +26,12 @@ function criarConteudoDaLupa() {
   copia.style.lineHeight = "1.6";
   copia.style.cursor = "default";
 
-  // Impede que elementos da cópia interfiram na página real
+  // Impede que os elementos da cópia sejam clicados
   copia.querySelectorAll(
-    "button, a, input, select, textarea"
-  ).forEach((el) => {
-    el.setAttribute("tabindex", "-1");
-    el.style.pointerEvents = "none";
+    "button, a, input, select, textarea, video"
+  ).forEach((elemento) => {
+    elemento.setAttribute("tabindex", "-1");
+    elemento.style.pointerEvents = "none";
   });
 
   lupaConteudo.appendChild(copia);
@@ -48,13 +49,16 @@ function atualizarLupa(evento) {
   lupa.style.left = `${x}px`;
   lupa.style.top = `${y}px`;
 
-  // Posição do cursor considerando o scroll
+  // Considera o scroll da página
   const paginaX = x + window.scrollX;
   const paginaY = y + window.scrollY;
 
-  // Mantém o ponto que está sob o cursor no centro da lupa
-  const deslocamentoX = raio - paginaX * ZOOM;
-  const deslocamentoY = raio - paginaY * ZOOM;
+  // Mantém o ponto sob o cursor no centro da lupa
+  const deslocamentoX =
+    raio - paginaX * ZOOM;
+
+  const deslocamentoY =
+    raio - paginaY * ZOOM;
 
   lupaConteudo.style.transform =
     `translate(${deslocamentoX}px, ${deslocamentoY}px) scale(${ZOOM})`;
@@ -100,14 +104,20 @@ botaoLupa.addEventListener("click", () => {
   }
 });
 
-document.addEventListener("mousemove", atualizarLupa);
+document.addEventListener(
+  "mousemove",
+  atualizarLupa
+);
 
-// Atualiza a posição da lupa durante o scroll
+// Atualiza a lupa quando a página é rolada
 window.addEventListener("scroll", () => {
   if (!lupaAtiva) return;
 
-  const x = parseFloat(lupa.style.left) || 0;
-  const y = parseFloat(lupa.style.top) || 0;
+  const x =
+    parseFloat(lupa.style.left) || 0;
+
+  const y =
+    parseFloat(lupa.style.top) || 0;
 
   atualizarLupa({
     clientX: x,
@@ -115,9 +125,12 @@ window.addEventListener("scroll", () => {
   });
 });
 
-// ESC desativa a lupa
+// Tecla ESC desativa a lupa
 document.addEventListener("keydown", (evento) => {
-  if (evento.key === "Escape" && lupaAtiva) {
+  if (
+    evento.key === "Escape" &&
+    lupaAtiva
+  ) {
     desativarLupa();
   }
 });
