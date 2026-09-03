@@ -1,178 +1,123 @@
-```javascript
-const botaoLupa = document.getElementById("botaoLupa");
 const lupa = document.getElementById("lupa");
 const lupaConteudo = document.getElementById("lupa-conteudo");
-const conteudo = document.getElementById("conteudo");
+const botaoLupa = document.getElementById("botaoLupa");
 
 let lupaAtiva = false;
+const ZOOM = 1.8;
 
-const ZOOM = 2;
+function criarConteudoDaLupa() {
+  lupaConteudo.innerHTML = "";
 
+  const copia = document.body.cloneNode(true);
 
-// ======================================
-// CRIAR CONTEÚDO DA LUPA
-// ======================================
+  // Remove a própria lupa da cópia
+  copia.querySelector("#lupa")?.remove();
 
-function criarConteudo() {
+  // Configura a cópia da página
+  copia.classList.add("lupa-pagina");
+  copia.style.margin = "0";
+  copia.style.padding = "0";
+  copia.style.width = "100vw";
+  copia.style.minHeight = "100vh";
+  copia.style.background = "#ffffff";
+  copia.style.color = "#222222";
+  copia.style.fontFamily = "Arial, sans-serif";
+  copia.style.lineHeight = "1.6";
+  copia.style.cursor = "default";
 
-    lupaConteudo.innerHTML = "";
+  // Impede que elementos da cópia interfiram na página real
+  copia.querySelectorAll(
+    "button, a, input, select, textarea"
+  ).forEach((el) => {
+    el.setAttribute("tabindex", "-1");
+    el.style.pointerEvents = "none";
+  });
 
-    // Copia somente o conteúdo principal
-    const copia = conteudo.cloneNode(true);
-
-    // Remove o ID para não duplicar
-    copia.removeAttribute("id");
-
-    // Mantém o mesmo tamanho e aparência
-    copia.style.margin = "0";
-    copia.style.maxWidth = "none";
-    copia.style.width = conteudo.offsetWidth + "px";
-
-    lupaConteudo.appendChild(copia);
+  lupaConteudo.appendChild(copia);
 }
 
+function atualizarLupa(evento) {
+  if (!lupaAtiva) return;
 
-// ======================================
-// ATUALIZAR A LUPA
-// ======================================
+  const x = evento.clientX;
+  const y = evento.clientY;
 
-function moverLupa(evento) {
+  const raio = lupa.offsetWidth / 2;
 
-    if (!lupaAtiva) {
-        return;
-    }
+  // Faz a lupa acompanhar o cursor
+  lupa.style.left = `${x}px`;
+  lupa.style.top = `${y}px`;
 
-    const mouseX = evento.clientX;
-    const mouseY = evento.clientY;
+  // Posição do cursor considerando o scroll
+  const paginaX = x + window.scrollX;
+  const paginaY = y + window.scrollY;
 
-    // Posiciona a lupa no cursor
-    lupa.style.left = mouseX + "px";
-    lupa.style.top = mouseY + "px";
+  // Mantém o ponto que está sob o cursor no centro da lupa
+  const deslocamentoX = raio - paginaX * ZOOM;
+  const deslocamentoY = raio - paginaY * ZOOM;
 
-
-    // Posição do cursor dentro da página
-    const paginaX = mouseX + window.scrollX;
-    const paginaY = mouseY + window.scrollY;
-
-
-    /*
-       O conteúdo ampliado é deslocado para que
-       exatamente a região que está sob o cursor
-       fique no centro da lupa.
-    */
-
-    const lupaX = (lupa.offsetWidth / 2);
-    const lupaY = (lupa.offsetHeight / 2);
-
-
-    const deslocamentoX =
-        lupaX - (paginaX * ZOOM);
-
-    const deslocamentoY =
-        lupaY - (paginaY * ZOOM);
-
-
-    lupaConteudo.style.transform =
-        `translate(${deslocamentoX}px, ${deslocamentoY}px) scale(${ZOOM})`;
+  lupaConteudo.style.transform =
+    `translate(${deslocamentoX}px, ${deslocamentoY}px) scale(${ZOOM})`;
 }
-
-
-// ======================================
-// ATIVAR LUPA
-// ======================================
 
 function ativarLupa() {
+  lupaAtiva = true;
 
-    lupaAtiva = true;
+  criarConteudoDaLupa();
 
-    criarConteudo();
+  lupa.style.display = "block";
 
-    lupa.style.display = "block";
+  botaoLupa.textContent = "Desativar lupa";
 
-    botaoLupa.textContent = "Desativar lupa";
+  botaoLupa.setAttribute(
+    "aria-pressed",
+    "true"
+  );
 
-    botaoLupa.setAttribute(
-        "aria-pressed",
-        "true"
-    );
-
-    lupa.setAttribute(
-        "aria-hidden",
-        "false"
-    );
+  document.body.classList.remove("cursor-normal");
 }
-
-
-// ======================================
-// DESATIVAR LUPA
-// ======================================
 
 function desativarLupa() {
+  lupaAtiva = false;
 
-    lupaAtiva = false;
+  lupa.style.display = "none";
 
-    lupa.style.display = "none";
+  botaoLupa.textContent = "Ativar lupa";
 
-    botaoLupa.textContent = "Ativar lupa";
+  botaoLupa.setAttribute(
+    "aria-pressed",
+    "false"
+  );
 
-    botaoLupa.setAttribute(
-        "aria-pressed",
-        "false"
-    );
-
-    lupa.setAttribute(
-        "aria-hidden",
-        "true"
-    );
+  document.body.classList.add("cursor-normal");
 }
 
-
-// ======================================
-// BOTÃO
-// ======================================
-
-botaoLupa.addEventListener("click", function() {
-
-    if (lupaAtiva) {
-
-        desativarLupa();
-
-    } else {
-
-        ativarLupa();
-
-    }
-
+botaoLupa.addEventListener("click", () => {
+  if (lupaAtiva) {
+    desativarLupa();
+  } else {
+    ativarLupa();
+  }
 });
 
+document.addEventListener("mousemove", atualizarLupa);
 
-// ======================================
-// MOVIMENTO DO MOUSE
-// ======================================
+// Atualiza a posição da lupa durante o scroll
+window.addEventListener("scroll", () => {
+  if (!lupaAtiva) return;
 
-document.addEventListener(
-    "mousemove",
-    moverLupa
-);
+  const x = parseFloat(lupa.style.left) || 0;
+  const y = parseFloat(lupa.style.top) || 0;
 
+  atualizarLupa({
+    clientX: x,
+    clientY: y
+  });
+});
 
-// ======================================
-// DESATIVAR COM ESC
-// ======================================
-
-document.addEventListener(
-    "keydown",
-    function(evento) {
-
-        if (
-            evento.key === "Escape" &&
-            lupaAtiva
-        ) {
-
-            desativarLupa();
-
-        }
-
-    }
-);
-```
+// ESC desativa a lupa
+document.addEventListener("keydown", (evento) => {
+  if (evento.key === "Escape" && lupaAtiva) {
+    desativarLupa();
+  }
+});
