@@ -2,116 +2,209 @@
 const botaoLupa = document.getElementById("botaoLupa");
 const lupa = document.getElementById("lupa");
 const lupaConteudo = document.getElementById("lupa-conteudo");
-const conteudo = document.getElementById("conteudo");
 
 let lupaAtiva = false;
-
-const zoom = 2;
+const ZOOM = 2;
 
 
 // ========================================
-// CRIA O CONTEÚDO DA LUPA
+// CRIA A CÓPIA DA PÁGINA DENTRO DA LUPA
 // ========================================
 
-function criarLupa() {
+function criarConteudoDaLupa() {
 
-  // Remove conteúdo anterior
   lupaConteudo.innerHTML = "";
 
-  // Faz uma cópia do conteúdo principal
-  const copia = conteudo.cloneNode(true);
+  // Copia a página inteira
+  const copia = document.body.cloneNode(true);
 
-  // Remove o ID para evitar duplicação
-  copia.removeAttribute("id");
+  // Remove elementos que não precisam aparecer
+  // dentro da lupa
+  copia.querySelectorAll(
+    "#lupa, .acessibilidade, script"
+  ).forEach(elemento => {
+    elemento.remove();
+  });
 
-  // Coloca a cópia dentro da lupa
+  // Mantém o mesmo tamanho da página original
+  copia.style.margin = "0";
+  copia.style.width =
+    document.documentElement.scrollWidth + "px";
+
+  copia.style.minHeight =
+    document.documentElement.scrollHeight + "px";
+
+  copia.style.cursor = "default";
+
   lupaConteudo.appendChild(copia);
 }
 
 
 // ========================================
-// ATIVAR / DESATIVAR LUPA
+// ATUALIZA A POSIÇÃO DA LUPA
 // ========================================
 
-botaoLupa.addEventListener("click", function () {
+function atualizarLupa(evento) {
 
-  lupaAtiva = !lupaAtiva;
-
-  if (lupaAtiva) {
-
-    criarLupa();
-
-    lupa.style.display = "block";
-
-    botaoLupa.textContent = "Desativar lupa";
-
-    botaoLupa.setAttribute("aria-pressed", "true");
-
-    lupa.setAttribute("aria-hidden", "false");
-
-  } else {
-
-    lupa.style.display = "none";
-
-    botaoLupa.textContent = "Ativar lupa";
-
-    botaoLupa.setAttribute("aria-pressed", "false");
-
-    lupa.setAttribute("aria-hidden", "true");
-  }
-
-});
-
-
-// ========================================
-// MOVIMENTAR A LUPA
-// ========================================
-
-document.addEventListener("mousemove", function (evento) {
-
-  if (!lupaAtiva) {
-    return;
-  }
+  if (!lupaAtiva) return;
 
   const x = evento.clientX;
   const y = evento.clientY;
 
-  // Posiciona a lupa no cursor
-  lupa.style.left = x + "px";
-  lupa.style.top = y + "px";
+  const scrollX = window.scrollX;
+  const scrollY = window.scrollY;
+
+  // A lupa acompanha o cursor
+  lupa.style.left = `${x}px`;
+  lupa.style.top = `${y}px`;
+
+  // Descobre a posição real do cursor na página
+  const pontoX = x + scrollX;
+  const pontoY = y + scrollY;
 
   /*
-   * Move o conteúdo dentro da lupa.
-   * O valor negativo faz com que a região
-   * abaixo do cursor apareça ampliada.
+   * Faz com que o mesmo ponto que está
+   * embaixo do cursor apareça ampliado
+   * dentro da lupa.
    */
 
-  const movimentoX = -(x * (zoom - 1));
-  const movimentoY = -(y * (zoom - 1));
+  const deslocamentoX =
+    x - pontoX * ZOOM;
+
+  const deslocamentoY =
+    y - pontoY * ZOOM;
 
   lupaConteudo.style.transform =
-    `translate(${movimentoX}px, ${movimentoY}px) scale(${zoom})`;
-});
+    `translate(${deslocamentoX}px, ${deslocamentoY}px)
+     scale(${ZOOM})`;
+}
 
 
 // ========================================
-// DESATIVAR COM ESC
+// ATIVAR LUPA
 // ========================================
 
-document.addEventListener("keydown", function (evento) {
+function ativarLupa() {
 
-  if (evento.key === "Escape" && lupaAtiva) {
+  lupaAtiva = true;
 
-    lupaAtiva = false;
+  criarConteudoDaLupa();
 
-    lupa.style.display = "none";
+  lupa.style.display = "block";
 
-    botaoLupa.textContent = "Ativar lupa";
+  lupa.setAttribute(
+    "aria-hidden",
+    "false"
+  );
 
-    botaoLupa.setAttribute("aria-pressed", "false");
+  botaoLupa.textContent =
+    "Desativar lupa";
 
-    lupa.setAttribute("aria-hidden", "true");
+  botaoLupa.setAttribute(
+    "aria-pressed",
+    "true"
+  );
+}
+
+
+// ========================================
+// DESATIVAR LUPA
+// ========================================
+
+function desativarLupa() {
+
+  lupaAtiva = false;
+
+  lupa.style.display = "none";
+
+  lupa.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  botaoLupa.textContent =
+    "Ativar lupa";
+
+  botaoLupa.setAttribute(
+    "aria-pressed",
+    "false"
+  );
+}
+
+
+// ========================================
+// BOTÃO DA LUPA
+// ========================================
+
+botaoLupa.addEventListener(
+  "click",
+  () => {
+
+    if (lupaAtiva) {
+      desativarLupa();
+    } else {
+      ativarLupa();
+    }
+
   }
+);
 
-});
+
+// ========================================
+// MOUSE
+// ========================================
+
+document.addEventListener(
+  "mousemove",
+  atualizarLupa
+);
+
+
+// ========================================
+// SCROLL
+// ========================================
+
+window.addEventListener(
+  "scroll",
+  () => {
+
+    if (lupaAtiva) {
+
+      atualizarLupa({
+
+        clientX:
+          parseFloat(lupa.style.left) ||
+          window.innerWidth / 2,
+
+        clientY:
+          parseFloat(lupa.style.top) ||
+          window.innerHeight / 2
+
+      });
+
+    }
+
+  }
+);
+
+
+// ========================================
+// ESC DESATIVA A LUPA
+// ========================================
+
+document.addEventListener(
+  "keydown",
+  evento => {
+
+    if (
+      evento.key === "Escape" &&
+      lupaAtiva
+    ) {
+
+      desativarLupa();
+
+    }
+
+  }
+);
 ```
