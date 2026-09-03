@@ -1,7 +1,4 @@
-/* ------------------------------
-   ESTILOS GERAIS
------------------------------- */
-
+```css
 * {
   box-sizing: border-box;
 }
@@ -12,7 +9,6 @@ body {
   background: #ffffff;
   color: #222222;
   line-height: 1.6;
-  cursor: none;
 }
 
 header {
@@ -41,6 +37,10 @@ h2 {
   font-size: 1.7rem;
 }
 
+h3 {
+  color: #003366;
+}
+
 p,
 li {
   font-size: 1.1rem;
@@ -53,6 +53,11 @@ li {
   margin: 20px 0;
   border-radius: 8px;
 }
+
+
+/* ========================================
+   BOTÃO
+======================================== */
 
 button {
   background: #0055aa;
@@ -70,47 +75,10 @@ button:focus {
   outline: 3px solid #ffcc00;
 }
 
-/* ------------------------------
-   LUPA
------------------------------- */
 
-#lupa {
-  position: fixed;
-  width: 150px;
-  height: 150px;
-
-  border: 5px solid #111;
-  border-radius: 50%;
-
-  background: white;
-
-  pointer-events: none;
-  z-index: 9999;
-
-  overflow: hidden;
-
-  display: none;
-
-  box-shadow:
-    0 4px 15px rgba(0, 0, 0, 0.4);
-
-  transform: translate(-50%, -50%);
-}
-
-#lupa-conteudo {
-  position: absolute;
-
-  width: 900px;
-  min-height: 100vh;
-
-  transform-origin: top left;
-
-  transform: scale(1.8);
-}
-
-/* ------------------------------
-   ACESSIBILIDADE
------------------------------- */
+/* ========================================
+   BARRA DE ACESSIBILIDADE
+======================================== */
 
 .acessibilidade {
   background: #111;
@@ -126,23 +94,70 @@ button:focus {
   margin-left: 10px;
 }
 
-/* Usuários que preferem menos movimento */
 
-@media (prefers-reduced-motion: reduce) {
-  * {
-    scroll-behavior: auto !important;
-  }
+/* ========================================
+   LUPA
+======================================== */
+
+#lupa {
+  position: fixed;
+
+  width: 180px;
+  height: 180px;
+
+  border: 5px solid #111;
+
+  border-radius: 50%;
+
+  background: white;
+
+  overflow: hidden;
+
+  pointer-events: none;
+
+  z-index: 99999;
+
+  display: none;
+
+  transform: translate(-50%, -50%);
+
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
-/* Usuários que navegam pelo teclado */
+
+/* Conteúdo ampliado */
+
+#lupa-conteudo {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 900px;
+
+  transform-origin: top left;
+
+  pointer-events: none;
+}
+
+
+/* ========================================
+   ACESSIBILIDADE PELO TECLADO
+======================================== */
 
 :focus-visible {
   outline: 4px solid #ffcc00;
   outline-offset: 3px;
 }
 
-/* Quando a lupa estiver desativada */
 
-body.cursor-normal {
-  cursor: auto;
+/* Redução de movimento */
+
+@media (prefers-reduced-motion: reduce) {
+
+  * {
+    scroll-behavior: auto !important;
+  }
+
 }
+```
