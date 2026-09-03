@@ -1,12 +1,14 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Site Acessível - Lupa</title>
+
   <link rel="stylesheet" href="style.css">
-  <script src ="script.js">
 </head>
 
 <body>
@@ -14,7 +16,7 @@
   <div class="acessibilidade">
     <strong>Recursos de acessibilidade</strong>
 
-    <button id="botaoLupa">
+    <button id="botaoLupa" aria-pressed="false">
       Ativar lupa
     </button>
   </div>
@@ -23,8 +25,10 @@
     <h1>Amostra projeto dos IFAs</h1>
 
     <p>
-Página criada para compartilhar informações sobre acessibilidade, desenvolvida no âmbito do Itinerário Formativo e relacionada aos conteúdos do segundo trimestre das disciplinas de Física e Tecnociência, Programação e Robótica.
-
+      Página criada para compartilhar informações sobre acessibilidade,
+      desenvolvida no âmbito do Itinerário Formativo e relacionada aos
+      conteúdos do segundo trimestre das disciplinas de Física e
+      Tecnociência, Programação e Robótica.
     </p>
   </header>
 
@@ -34,31 +38,48 @@ Página criada para compartilhar informações sobre acessibilidade, desenvolvid
       <h2>O que é IFA</h2>
 
       <p>
-Itinerário formativo é uma parte do Ensino Médio que permite ao aluno aprofundar seus conhecimentos em uma área de interesse, como Ciências da Natureza, Matemática, Humanas, Linguagens ou formação técnica.
-
+        Itinerário formativo é uma parte do Ensino Médio que permite ao
+        aluno aprofundar seus conhecimentos em uma área de interesse,
+        como Ciências da Natureza, Matemática, Humanas, Linguagens ou
+        formação técnica.
       </p>
 
+      <h3>Robótica</h3>
+
       <p>
-      <h3>Robótica
-</h3>
-        <p>Robótica é uma matéria que ensina a criar, montar e programar robôs, utilizando conhecimentos de programação, eletrônica e tecnologia para desenvolver soluções e projetos.</p>
-      
-        <h3>Programação</h3>
-          
-          <p>Programação é uma matéria que ensina a criar códigos e sistemas para computadores e outros dispositivos, desenvolvendo o raciocínio lógico e a capacidade de resolver problemas por meio da tecnologia.
-</p>
-          
-        <h3> Física e tecnociência
-</h3>
-          <p>Física e Tecnociência é uma matéria que estuda os fenômenos da natureza e sua relação com a tecnologia, mostrando como os conhecimentos científicos são usados para criar soluções e entender o mundo ao nosso redor.</p>
+        Robótica é uma matéria que ensina a criar, montar e programar
+        robôs, utilizando conhecimentos de programação, eletrônica e
+        tecnologia para desenvolver soluções e projetos.
+      </p>
+
+      <h3>Programação</h3>
+
+      <p>
+        Programação é uma matéria que ensina a criar códigos e sistemas
+        para computadores e outros dispositivos, desenvolvendo o
+        raciocínio lógico e a capacidade de resolver problemas por meio
+        da tecnologia.
+      </p>
+
+      <h3>Física e Tecnociência</h3>
+
+      <p>
+        Física e Tecnociência é uma matéria que estuda os fenômenos da
+        natureza e sua relação com a tecnologia, mostrando como os
+        conhecimentos científicos são usados para criar soluções e
+        entender o mundo ao nosso redor.
       </p>
     </section>
 
     <section>
-      <h2>Esse projeto tem como objetivo criar um site que seja acessível para pessoas com a visão baixa. </h2>
+      <h2>
+        Esse projeto tem como objetivo criar um site que seja acessível
+        para pessoas com baixa visão.
+      </h2>
 
       <div class="card">
         <h3>Ampliação</h3>
+
         <p>
           A lupa permite aumentar visualmente uma determinada região
           da página enquanto o usuário movimenta o cursor.
@@ -67,6 +88,7 @@ Itinerário formativo é uma parte do Ensino Médio que permite ao aluno aprofun
 
       <div class="card">
         <h3>Contraste</h3>
+
         <p>
           Cores com contraste adequado ajudam pessoas com baixa visão
           a identificar textos e elementos da interface.
@@ -75,6 +97,7 @@ Itinerário formativo é uma parte do Ensino Médio que permite ao aluno aprofun
 
       <div class="card">
         <h3>Navegação pelo teclado</h3>
+
         <p>
           Todos os elementos interativos devem poder ser acessados
           utilizando apenas o teclado.
@@ -101,9 +124,14 @@ Itinerário formativo é uma parte do Ensino Médio que permite ao aluno aprofun
 
   </main>
 
+  <!-- Lupa -->
   <div id="lupa" aria-hidden="true">
     <div id="lupa-conteudo"></div>
   </div>
 
+  <!-- IMPORTANTE: carregar o JavaScript depois do HTML -->
+  <script src="script.js"></script>
+
 </body>
 </html>
+```
